@@ -1,0 +1,31 @@
+name: Release Packager
+
+on:
+  push:
+    tags:
+      - "v*"  # Triggers only on tags like v1.0.0 (SemVer)
+
+# explicit permissions are required for the GITHUB_TOKEN to modify releases
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Create Zip Archive
+        # -r: recursive
+        # -x: exclude the .git directory (metadata is not needed in the artifact)
+        run: zip -r wk_addon.zip . -x "*.git*"
+
+      - name: Create Release and Upload Asset
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create ${{ github.ref_name }} \
+            wk_addon.zip \
+            --generate-notes \
+            --title "Release ${{ github.ref_name }}"
