@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Wani Kani Toggle",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Toggle on G press",
   "icons": {
     "128": "images/icon-128.png"
